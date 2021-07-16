@@ -43,9 +43,8 @@ function myFunction () {
 }
 
 
+
 // FUNZIONI 
-
-
 
 // Funzione per calcolare numeri random 
 function randomNumber (min, max) {
@@ -55,7 +54,7 @@ function randomNumber (min, max) {
 // Funzione per richiamare il prompt 
 function getUserNumber () {
     do {
-        var userChoice = prompt("Inserisci il primo numero che hai visto")
+        var userChoice = prompt("Inserisci i numeri che hai visto")
     } while (isNaN(userChoice) || !userChoice || userChoice < 1 || userChoice > 10);
 }
 
