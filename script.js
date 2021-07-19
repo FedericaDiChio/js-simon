@@ -6,17 +6,13 @@ Al termine dei 30 secondi l'utente deve inserire, uno alla volta, i numeri che h
 Dopo che sono stati inseriti i 5 numeri, il software mostra in un alert quanti e quali dei numeri da indovinare sono stati individuati. */
 
 
-// VARIABILI 
-var cpuNumber = [];                         /*memorizzare i 5 numeri casuali*/                                        
-var random = 5;                             /*lunghezza array numeri casuali */
-var maxNumbers = 10;                        /* tetto massimo per scegliere*/
-var seconds = 5;      /modificare a 30/                /*l'inizio del countdown*/
-var display = document.getElementById("countdown");     /* vedere il countdown in pagina*/
-
+// Variabili
+var cpuNumber = []; 
+var maxNumbers = 50;
 
 
 // Controlliamo se i numeri non siano già nell'array 
-while (cpuNumber.length < random) {
+while (cpuNumber.length < 5) {
     var cpuRandom = randomNumber (1, maxNumbers); 
     if (!cpuNumber.includes(cpuRandom)) {
         cpuNumber.push(cpuRandom);
@@ -27,20 +23,36 @@ while (cpuNumber.length < random) {
 alert(cpuNumber)
 
 
-// Creiamo un contatore 
-var stop = setInterval (myFunction, 1000) 
-function myFunction () {
-    if (seconds < 0) {
-        // fermiamo il contatore quando arriva a 0
-        clearInterval(stop) 
-        // quando il contatore è a 0, chiediamo i 5 numeri all'utente
-        
-        
-    } else {
-        display.innerHTML = seconds;
+// Chiediamo dopo tot secondi i numeri all'utente 
+// controlliamo che l'utente non abbia inserito due volte lo stesso numero 
+// controlliamo che la scelta dell'utente combaci con i numeri random 
+
+setTimeout (function () {
+    var userGuess =  [];               /*array tentativi dell'utente */
+    var userNumbers = [];              /*array numeri indovinati*/
+    while  (userGuess.length < 5) {
+        var userChoice = getUserNumber();  /*funzione per chiedere i numeri all'utente */
+        if (!userGuess.includes(userChoice)) {
+            userGuess.push(userChoice)
+            if(cpuNumber.includes(userChoice)) {
+                userNumbers.push(userChoice);
+            }
+        } else {
+            alert("Hai già scelto 'sto numero!")
+        }
     }
-    seconds --;
-}
+    
+    // Facciamo uscire un messaggio diverso a seconda dei numeri indovinati 
+    var message = "complimenti, hai indovinato "
+    if (userNumbers.length === 0) {
+        alert("Complimenti, hai le stesse capacità mnemoniche di Dory!");
+    } else if (userNumbers.length === 1) {
+        alert(message + userNumbers.length + " numero: " + userNumbers);
+    } else {
+        alert(message + userNumbers.length + " numeri: "  + userNumbers);
+    }
+    
+}, 1000);
 
 
 
@@ -51,10 +63,18 @@ function randomNumber (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Funzione per richiamare il prompt 
+// Funzione per richiamare il prompt e dare una validazione
 function getUserNumber () {
-    do {
-        var userChoice = prompt("Inserisci i numeri che hai visto")
-    } while (isNaN(userChoice) || !userChoice || userChoice < 1 || userChoice > 10);
+    var num = prompt("Inserisci i numeri che hai visto")
+    while (isNaN(num) || !num || num < 1 || num > 50 || num.trim === " ") {
+        alert("Non hai inserito un numero valido!")
+        num = prompt("Inserisci i numeri che hai visto")
+    }
+
+    return parseInt(num)
 }
+
+
+
+
 
